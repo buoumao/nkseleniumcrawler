@@ -58,14 +58,47 @@ def after_login():
 
 def get_shoes():
     shoes_position().click()
+
+    # 选择size
+    size15 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > ul > li:nth-child(17) > button')))
+    buttonone = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > div > button')))
+    size15.click()
+    buttonone.click()
+
+    # 填写收货信息信息
+    first_name = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#first-name-shipping')))
+    last_name = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#last-name-shipping')))
+    address1 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#shipping-address-1')))
+    address2 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#shipping-address-2')))
+    city = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#city')))
+    state = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#state')))
+    zipcode = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#zipcode')))
+    country = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#country')))
+    phonenum = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#phone-number')))
+    buttontwo = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.shipping-component.mt1-sm > div > span > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button')))
+
+    # 填写信用卡信息
+    newcrad = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.payment-component.mt1-sm > div > span > span:nth-child(1) > span > div.ncss-row.mt4-sm > div > button.ncss-btn.custom-responsive-button.border-medium-grey.ncss-brand.pr5-sm.pl5-sm.pt3-sm.pb3-sm.pt2-md.pb2-md.u-uppercase.mb4-sm.mb4-md.ml2-md.mr4-md.d-sm-b.d-md-ib')))
+    cardnumber = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#creditCardNumber')))
+    exdate = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#expirationDate')))
+    cvnumber = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#cvNumber')))
+
+    buttonthree = '#checkout-sections > div.payment-component.mt1-sm > div > span > span > span > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button'
+
+    finalsummit = '#checkout-sections > div:nth-child(5) > div > div > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button'
+
     pass
 
 
 def shoes_position():
     # line1-2
-    line11 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(1) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > a')))
-    line12 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(2) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > a')))
-    return line11
+    # line11 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(1) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > a')))
+    # line12 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(2) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > a')))
+    # line13 = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div/div[1]/div/div[2]/div[2]/div/section/figure[1]/div/div/figcaption/div/div/div[2]/div')))
+    #line22 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(5) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button')))
+    line23 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(6) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button')))
+
+    return line23
 
 def get_cookies():
     cookies = browser.get_cookies()
@@ -87,7 +120,7 @@ def get_nowtime():
 
 
 def startshopping():
-    while int(nowtime2) < 140530:
+    while int(nowtime2) < 220000:
 
         get_nowtime()
         time.sleep(0.01)
