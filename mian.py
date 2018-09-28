@@ -13,6 +13,10 @@ from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEven
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 import datetime
+
+from shoes_size import men_size
+from persondata import *
+
 chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
@@ -46,10 +50,10 @@ def login():
     print(login_success.text)
     after_login()
 
-
+# 切换成美国
 def after_login():
     # country = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > header > div.d-sm-h.d-lg-b > section > ul > li:nth-child(4) > button > img')))
-    time.sleep(5)
+    time.sleep(2)
     country = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div/div[1]/div/header/div[1]/section/ul/li[4]/button/img')))
 
     country.click()
@@ -57,12 +61,18 @@ def after_login():
     america.click()
 
 def get_shoes():
-    shoes_position().click()
-
+    shoes_position(7).click()
+    choosesize = men_size(8.5)
     # 选择size
-    size15 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > ul > li:nth-child(17) > button')))
+    # size15 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > ul > li:nth-child(17) > button')))
+    size_selected = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > ul > li:nth-child({}) > button'.format(choosesize))))
+    size_selected.click()
+
+
+
     buttonone = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > div > button')))
-    size15.click()
+    # size15.click()
+    # 第一次保存继续
     buttonone.click()
 
     # 填写收货信息信息
@@ -75,40 +85,60 @@ def get_shoes():
     zipcode = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#zipcode')))
     country = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#country')))
     phonenum = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#phone-number')))
+
+    first_name.send_keys(fiction_data['first_name'])
+    last_name.send_keys(fiction_data['last_name'])
+    address1.send_keys(fiction_data['address1'])
+    # address2.send_keys(fiction_data['address2'])
+    city.send_keys(fiction_data['city'])
+    state.send_keys(fiction_data['state'])
+    zipcode.send_keys(fiction_data['zipcode'])
+    country.send_keys(fiction_data['country'])
+    phonenum.send_keys(fiction_data['phonenum'])
+
+    # 第二次保存继续
     buttontwo = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.shipping-component.mt1-sm > div > span > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button')))
+    buttontwo.click()
 
     # 填写信用卡信息
     newcrad = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.payment-component.mt1-sm > div > span > span:nth-child(1) > span > div.ncss-row.mt4-sm > div > button.ncss-btn.custom-responsive-button.border-medium-grey.ncss-brand.pr5-sm.pl5-sm.pt3-sm.pb3-sm.pt2-md.pb2-md.u-uppercase.mb4-sm.mb4-md.ml2-md.mr4-md.d-sm-b.d-md-ib')))
+    newcrad.click()
+
     cardnumber = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#creditCardNumber')))
     exdate = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#expirationDate')))
     cvnumber = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#cvNumber')))
 
-    buttonthree = '#checkout-sections > div.payment-component.mt1-sm > div > span > span > span > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button'
 
-    finalsummit = '#checkout-sections > div:nth-child(5) > div > div > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button'
+    cardnumber.send_keys(fiction_data['cardnumber'])
+    exdate.send_keys(fiction_data['exdate'])
+    cvnumber.send_keys(fiction_data['cvnumber'])
 
-    pass
+    # 第三次保存继续
+    buttonthree = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.payment-component.mt1-sm > div > span > span > span > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button')))
+    buttonthree.click()
+
+    # 最终提交
+    finalsummit = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div:nth-child(5) > div > div > div.mt6-sm.mb6-sm.pr0-sm.pl0-sm.ta-sm-c > button')))
+    finalsummit.click()
 
 
-def shoes_position():
-    # line1-2
+# 要抢的鞋的位置
+def shoes_position(shoesnumber):
+
     # line11 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(1) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > a')))
     # line12 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(2) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > a')))
     # line13 = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div/div[1]/div/div[2]/div[2]/div/section/figure[1]/div/div/figcaption/div/div/div[2]/div')))
-    #line22 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(5) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button')))
-    line23 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(6) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button')))
+    # line21 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(4) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button')))
+    # line22 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child(5) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button')))
+    shoes_pos = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div > div > div.main-layout > div > div:nth-child(3) > div.pt4-md.pt6-lg > div > section > figure:nth-child({}) > div > div > figcaption > div > div > div.cta-container.bg-white.pt6-sm.pb7-sm.pb5-lg.prl12-sm.pb8-sm.pt8-lg.ta-sm-c > button'.format(shoesnumber))))
 
-    return line23
+    return shoes_pos
 
-def get_cookies():
-    cookies = browser.get_cookies()
-    with open("cookies.txt", "w") as fp:
-        json.dump(cookies, fp)
-    print('获取cookies成功！')
-    print(cookies)
-def load_cookies():
-    with open("cookies.txt", "r") as fp:
-        cookies = json.load(fp)
+
+def shoes_size():
+    size15 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout-sections > div.size-component.mt1-sm > div.checkout-size-section-content.prl6-sm.prl0-md.checkout-section-expandable > span > ul > li:nth-child(17) > button')))
+
+
 
 
 def get_nowtime():
@@ -120,7 +150,7 @@ def get_nowtime():
 
 
 def startshopping():
-    while int(nowtime2) < 220000:
+    while int(nowtime2) < 152000:
 
         get_nowtime()
         time.sleep(0.01)
